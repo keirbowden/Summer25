@@ -1,0 +1,79 @@
+<template>
+  <lightning-card title="Formula Checker">
+    <div class="slds-var-p-around_small">
+      <div class="c-container">
+        <lightning-layout horizontal-align="spread">
+          <lightning-layout-item size="4" class="slds-var-p-right_small">
+            <lightning-select
+              name="sObject Type"
+              label="Type"
+              value={type}
+              options={typeOptions}
+              onchange={handleSObjectType}
+              required
+            ></lightning-select>
+          </lightning-layout-item>
+          <lightning-layout-item size="4" class="slds-var-p-right_small" >
+            <lightning-select
+              name="Return Type"
+              label="Return Type"
+              value={returnType}
+              options={returnTypeOptions}
+              onchange={handleReturnType}
+              required
+            ></lightning-select>
+          </lightning-layout-item>
+          <lightning-layout-item size="4">
+            <lightning-record-picker
+              label="Record"
+              placeholder="Search records..."
+              object-api-name={type}
+              lwc:ref="record"
+              onchange={handleRecord}
+            >
+            </lightning-record-picker>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <lightning-textarea
+        name="formula"
+        label="Formula"
+        placeholder="enter formula..."
+        value={formula}
+        lwc:ref="formula"
+        onchange={handleFormula}
+      ></lightning-textarea>
+
+      <div class="slds-var-m-top_small">
+        <lightning-input type="checkbox" 
+            label="Formula is template"
+            value={formulaIsTemplate}
+            lwc:ref="formulaIsTemplate"
+            onchange={handleTemplateToggled}
+        > 
+        </lightning-input>
+      </div>
+
+
+      <div class="slds-var-m-top_small">
+        <lightning-button
+          variant="brand"
+          label="Check"
+          title="Check"
+          onclick={checkFormula}
+          class="slds-var-m-top_small"
+        ></lightning-button>
+      </div>
+      </div>
+      </lightning-card>
+      <lightning-card title="Result">
+        <div class="slds-var-p-around_small">
+          <template lwc:if={formulaOutput}>
+            <div class="slds-text-color_success">{formulaOutput}</div>
+        </template>
+        <template lwc:if={error}>
+            <div class="slds-text-color_error">{error}</div>
+        </template>
+        </div>
+    </lightning-card>
+</template>
