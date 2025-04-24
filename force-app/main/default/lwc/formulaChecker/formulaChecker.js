@@ -31,10 +31,8 @@ export default class FormulaChecker extends LightningElement {
     handleSObjectType(ev)
     {
         let newType=ev.detail.value;
-        console.log('Comparing ' + newType + ' with ' + this.type);
         if (newType!==this.type)
         {
-            console.log('They are different - clearing');
             this.type = ev.detail.value;
             this.formula='';
             this.refs.formula.value = '';
@@ -51,7 +49,6 @@ export default class FormulaChecker extends LightningElement {
     handleTemplateToggled(ev)
     {
         this.formulaIsTemplate=!this.formulaIsTemplate;
-        console.log('template =' + this.formulaIsTemplate);
     }
 
     handleRecord(ev)
@@ -61,12 +58,8 @@ export default class FormulaChecker extends LightningElement {
 
     handleFormula(ev) {
         const eventValue=ev.detail.value;
-        console.log('Value = ' + eventValue);
         clearTimeout(this.timeout);
         this.timeout = setTimeout((value) => {
-            console.clear();
-            console.log('handleFormula() -> value: ' + value);
-            console.log('template before =' + this.formulaIsTemplate);
             if (-1!=value.indexOf('{!')) {
                 this.formulaIsTemplate=true;
             }
@@ -74,7 +67,6 @@ export default class FormulaChecker extends LightningElement {
                 this.formulaIsTemplate=false;
             }
             this.refs.formulaIsTemplate.checked=this.formulaIsTemplate;
-            console.log('template after =' + this.formulaIsTemplate);
           }, 1000, eventValue);
     }
 
@@ -90,11 +82,8 @@ export default class FormulaChecker extends LightningElement {
                 formulaIsTemplate: this.formulaIsTemplate
                };
 
-            console.log('Check formula params = ' + JSON.stringify(params)); 
             // Call the Apex Method from the controller);
             this.formulaOutput = await CheckFormula(params);
-
-            console.log('Output = ' + this.formulaOutput);
             this.error = undefined;
         } catch (error) {
             let errors=reduceErrors(error).reduce((accumulator, currentValue) => accumulator.concat(', ', currentValue), '');
